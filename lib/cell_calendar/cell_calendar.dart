@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-const double _headerHeight = 80;
+const double _headerHeight = 84;
 
 class CellCalendar extends StatelessWidget {
   Widget _tableCell(double height) {
@@ -39,33 +39,54 @@ class CellCalendar extends StatelessWidget {
       children: [
         SizedBox(
           height: _headerHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Column(
             children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () {},
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () {},
+                  ),
+                  Text("Month"),
+                  IconButton(
+                    icon: Icon(Icons.arrow_forward_ios),
+                    onPressed: () {},
+                  ),
+                ],
               ),
-              Text("Month"),
-              IconButton(
-                icon: Icon(Icons.arrow_forward_ios),
-                onPressed: () {},
-              ),
+              Row(
+                children: [
+                  Expanded(child: Text("Sun", textAlign: TextAlign.center)),
+                  Expanded(child: Text("Mon", textAlign: TextAlign.center)),
+                  Expanded(child: Text("Tue", textAlign: TextAlign.center)),
+                  Expanded(child: Text("Wed", textAlign: TextAlign.center)),
+                  Expanded(child: Text("Thu", textAlign: TextAlign.center)),
+                  Expanded(child: Text("Fri", textAlign: TextAlign.center)),
+                  Expanded(child: Text("Sat", textAlign: TextAlign.center)),
+                ],
+              )
             ],
           ),
         ),
-        Table(
-          border:
-              TableBorder.all(width: 1, color: Theme.of(context).dividerColor),
-          children: [
-            _tableRow(tableRowHeight),
-            _tableRow(tableRowHeight),
-            _tableRow(tableRowHeight),
-            _tableRow(tableRowHeight),
-            _tableRow(tableRowHeight),
-            _tableRow(tableRowHeight),
-          ],
+        Expanded(
+          child: PageView.builder(
+            itemBuilder: (context, index) {
+              return Table(
+                border: TableBorder.all(
+                    width: 1, color: Theme.of(context).dividerColor),
+                children: [
+                  _tableRow(tableRowHeight),
+                  _tableRow(tableRowHeight),
+                  _tableRow(tableRowHeight),
+                  _tableRow(tableRowHeight),
+                  _tableRow(tableRowHeight),
+                  _tableRow(tableRowHeight),
+                ],
+              );
+            },
+          ),
         ),
       ],
     );
