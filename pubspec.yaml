@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider:
   syncfusion_flutter_calendar: ^18.2.56
 
 

@@ -1,5 +1,7 @@
+import 'package:cell_calendar_develop/cell_calendar/cell_calendar_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const List<String> _DaysOfTheWeek = [
   'Sun',
@@ -11,17 +13,7 @@ const List<String> _DaysOfTheWeek = [
   'Sat'
 ];
 
-const List<String> _sampleDays = [
-  'test',
-  'hey',
-  'come on',
-  'good bye',
-  'ohh',
-  'ok',
-  'no'
-];
-
-class CellCalendar2 extends StatelessWidget {
+class CellCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,21 +28,42 @@ class CellCalendar2 extends StatelessWidget {
         ),
         Expanded(
           child: PageView.builder(
+            controller: PageController(initialPage: 1200),
             itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  DaysOfTheWeek(),
-                  DaysRow(),
-                  DaysRow(),
-                  DaysRow(),
-                  DaysRow(),
-                  DaysRow(),
-                  DaysRow(),
-                ],
-              );
+              return CalendarBody.wrapped();
             },
           ),
         ),
+      ],
+    );
+  }
+}
+
+class CalendarBody extends StatelessWidget {
+  const CalendarBody._({
+    Key key,
+  }) : super(key: key);
+
+  static Widget wrapped() {
+    return ChangeNotifierProvider(
+      create: (_context) => CellCalendarNotifier(),
+      child: const CalendarBody._(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Provider.of<CellCalendarNotifier>(context);
+    final days = controller.currentDays;
+    return Column(
+      children: [
+        DaysOfTheWeek(),
+        DaysRow(dates: days.getRange(0, 7).toList()),
+        DaysRow(dates: days.getRange(7, 14).toList()),
+        DaysRow(dates: days.getRange(14, 21).toList()),
+        DaysRow(dates: days.getRange(21, 28).toList()),
+        DaysRow(dates: days.getRange(28, 35).toList()),
+        DaysRow(dates: days.getRange(35, 42).toList()),
       ],
     );
   }
@@ -74,14 +87,17 @@ class DaysOfTheWeek extends StatelessWidget {
 
 class DaysRow extends StatelessWidget {
   const DaysRow({
+    @required this.dates,
     Key key,
   }) : super(key: key);
+
+  final List<DateTime> dates;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Row(
-        children: _sampleDays.map((day) {
+        children: dates.map((date) {
           return Expanded(
             child: DecoratedBox(
               decoration: BoxDecoration(
@@ -95,7 +111,7 @@ class DaysRow extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    day,
+                    date.day.toString(),
                     textAlign: TextAlign.center,
                   ),
                 ],
