@@ -17,6 +17,8 @@ const List<String> _weekDays = [
   'Sat'
 ];
 
+const List<String> _sampleDays = ['test','hey','come on','good bye','ohh','ok','no'];
+
 class CellCalendar extends StatelessWidget {
   Widget _tableCell(double height) {
     return SizedBox(
@@ -70,38 +72,12 @@ class CellCalendar extends StatelessWidget {
             itemBuilder: (context, index) {
               return Column(
                 children: [
-                  SizedBox(
-                    height: _weekDayLabelsHeight,
+                  Expanded(
                     child: Row(
-                      children: [
-                        Expanded(
-                            child: Text("Sun", textAlign: TextAlign.center)),
-                        Expanded(
-                            child: Text("Mon", textAlign: TextAlign.center)),
-                        Expanded(
-                            child: Text("Tue", textAlign: TextAlign.center)),
-                        Expanded(
-                            child: Text("Wed", textAlign: TextAlign.center)),
-                        Expanded(
-                            child: Text("Thu", textAlign: TextAlign.center)),
-                        Expanded(
-                            child: Text("Fri", textAlign: TextAlign.center)),
-                        Expanded(
-                            child: Text("Sat", textAlign: TextAlign.center)),
-                      ],
+                      children: _sampleDays.map((day) => {
+                        return Text(day);
+                      }).toList();,
                     ),
-                  ),
-                  Table(
-                    border: TableBorder.all(
-                        width: 1, color: Theme.of(context).dividerColor),
-                    children: [
-                      _tableRow(tableRowHeight),
-                      _tableRow(tableRowHeight),
-                      _tableRow(tableRowHeight),
-                      _tableRow(tableRowHeight),
-                      _tableRow(tableRowHeight),
-                      _tableRow(tableRowHeight),
-                    ],
                   ),
                 ],
               );

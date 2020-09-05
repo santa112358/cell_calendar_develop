@@ -25,9 +25,8 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: Center(
-            child:
-                CellCalendar()) // This trailing comma makes auto-formatting nicer for build methods.
+        body:
+            CellCalendar() // This trailing comma makes auto-formatting nicer for build methods.
         );
   }
 }
