@@ -1,25 +1,30 @@
 import 'package:flutter/foundation.dart';
 
+import 'constants.dart';
+
 extension _DaysDuration on int {
-  Duration get daysDureation {
+  Duration get daysDuration {
     return Duration(days: (this == 7) ? 0 : -this);
   }
 }
 
 class CellCalendarNotifier extends ChangeNotifier {
-  List<DateTime> currentDays = [];
   CellCalendarNotifier() {
     this._initialize();
   }
+
+  DateTime currentDateTime;
+
+  List<DateTime> currentDays = [];
   void _initialize() {
-    final currentMonth = DateTime.now().month;
-    currentDays = _getCurrentDays(currentMonth);
+    currentDateTime = DateTime.now();
+    currentDays = _getCurrentDays(currentDateTime);
     notifyListeners();
   }
 
-  List<DateTime> _getCurrentDays(int month) {
+  List<DateTime> _getCurrentDays(DateTime dateTime) {
     final List<DateTime> result = [];
-    final firstDay = _getFirstDay(month);
+    final firstDay = _getFirstDay(dateTime);
     result.add(firstDay);
     for (int i = 0; i + 1 < 42; i++) {
       result.add(firstDay.add(Duration(days: i + 1)));
@@ -27,8 +32,14 @@ class CellCalendarNotifier extends ChangeNotifier {
     return result;
   }
 
-  DateTime _getFirstDay(int month) {
-    final firstDayOfTheMonth = DateTime(2020, month, 1);
-    return firstDayOfTheMonth.add(firstDayOfTheMonth.weekday.daysDureation);
+  DateTime _getFirstDay(DateTime dateTime) {
+    final firstDayOfTheMonth = DateTime(dateTime.year, dateTime.month, 1);
+    return firstDayOfTheMonth.add(firstDayOfTheMonth.weekday.daysDuration);
+  }
+
+  void onPageChanged(int index) {
+    currentDateTime = index.currentDateTime;
+    currentDays = _getCurrentDays(currentDateTime);
+    notifyListeners();
   }
 }

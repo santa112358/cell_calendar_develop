@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'constants.dart';
+
 const List<String> _DaysOfTheWeek = [
   'Sun',
   'Mon',
@@ -16,22 +18,29 @@ const List<String> _DaysOfTheWeek = [
 class CellCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_context) => CellCalendarNotifier(),
+      child: CellCalendarFrame(),
+    );
+  }
+}
+
+class CellCalendarFrame extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-          child: Text(
-            "Month",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
+        MonthYearLabel(),
         Expanded(
           child: PageView.builder(
             controller: PageController(initialPage: 1200),
             itemBuilder: (context, index) {
-              return CalendarBody.wrapped();
+              return CalendarBody();
             },
+            onPageChanged:
+                Provider.of<CellCalendarNotifier>(context, listen: false)
+                    .onPageChanged,
           ),
         ),
       ],
@@ -39,17 +48,30 @@ class CellCalendar extends StatelessWidget {
   }
 }
 
-class CalendarBody extends StatelessWidget {
-  const CalendarBody._({
+class MonthYearLabel extends StatelessWidget {
+  const MonthYearLabel({
     Key key,
   }) : super(key: key);
 
-  static Widget wrapped() {
-    return ChangeNotifierProvider(
-      create: (_context) => CellCalendarNotifier(),
-      child: const CalendarBody._(),
+  @override
+  Widget build(BuildContext context) {
+    final controller = Provider.of<CellCalendarNotifier>(context);
+    final monthLabel = controller.currentDateTime?.month?.monthName ?? "";
+    final yearLabel = controller.currentDateTime?.year?.toString();
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+      child: Text(
+        monthLabel + " " + yearLabel,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
     );
   }
+}
+
+class CalendarBody extends StatelessWidget {
+  const CalendarBody({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
