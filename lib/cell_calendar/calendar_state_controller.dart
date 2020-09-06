@@ -26,10 +26,16 @@ class CalendarStateController extends ChangeNotifier {
   void onPageChanged(int index) {
     currentDateTime = index.currentDateTime;
     if (onPageChangedFromUserArgument != null) {
+      final currentFirstDate = _getFirstDay(currentDateTime);
       onPageChangedFromUserArgument(
-          currentDateTime, currentDateTime.add(Duration(days: 41)));
+          currentFirstDate, currentFirstDate.add(Duration(days: 41)));
     }
     notifyListeners();
+  }
+
+  DateTime _getFirstDay(DateTime dateTime) {
+    final firstDayOfTheMonth = DateTime(dateTime.year, dateTime.month, 1);
+    return firstDayOfTheMonth.add(firstDayOfTheMonth.weekday.daysDuration);
   }
 
   List<CalendarEvent> eventsOnTheDay(DateTime date) {

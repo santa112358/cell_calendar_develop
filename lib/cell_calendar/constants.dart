@@ -5,6 +5,10 @@ extension DateExtension on int {
     return this - 1200;
   }
 
+  Duration get daysDuration {
+    return Duration(days: (this == 7) ? 0 : -this);
+  }
+
   String get monthName {
     switch (this) {
       case 1:

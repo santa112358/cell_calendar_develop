@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'constants.dart';
 
 extension _DaysDuration on int {
-  Duration get daysDuration {
-    return Duration(days: (this == 7) ? 0 : -this);
-  }
+
 }
 
 class CalendarMonthController extends ChangeNotifier {
