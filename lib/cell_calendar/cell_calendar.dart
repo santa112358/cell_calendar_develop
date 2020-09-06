@@ -8,7 +8,7 @@ import 'calendar_event.dart';
 import 'components/days_of_the_week.dart';
 import 'components/days_row.dart';
 import 'components/month_year_label.dart';
-import 'constants.dart';
+import 'date_extension.dart';
 
 class CellCalendar extends StatelessWidget {
   CellCalendar({this.events, this.onPageChanged, this.onCellTapped});

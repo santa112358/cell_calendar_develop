@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../calendar_state_controller.dart';
-import '../constants.dart';
+import '../date_extension.dart';
 
 class MonthYearLabel extends StatelessWidget {
   const MonthYearLabel({
