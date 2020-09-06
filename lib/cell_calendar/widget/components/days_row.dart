@@ -55,14 +55,17 @@ class DayCell extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-              Column(
-                children: Provider.of<CalendarStateController>(context)
-                    .eventsOnTheDay(date)
-                    .map(
-                      (event) => EventLabel(event),
-                    )
-                    .toList(),
-              )
+              Selector<CalendarStateController, List<CalendarEvent>>(
+                builder: (context, events, _) => Column(
+                  children: Provider.of<CalendarStateController>(context)
+                      .eventsOnTheDay(date)
+                      .map(
+                        (event) => EventLabel(event),
+                      )
+                      .toList(),
+                ),
+                selector: (context, controller) => controller.events,
+              ),
             ],
           ),
         ),
@@ -84,8 +87,10 @@ class EventLabel extends StatelessWidget {
       color: event.eventBackgroundColor,
       child: Text(
         event.eventName,
-        style:
-            TextStyle(color: event.eventTextColor, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: event.eventTextColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 11),
         textAlign: TextAlign.center,
         overflow: TextOverflow.ellipsis,
       ),
