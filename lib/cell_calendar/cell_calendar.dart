@@ -18,24 +18,24 @@ const List<String> _DaysOfTheWeek = [
 ];
 
 class CellCalendar extends StatelessWidget {
-  CellCalendar({this.events, this.onPageChanged});
+  CellCalendar({this.events, this.onPageChanged, this.onCellTapped});
 
   final List<CalendarEvent> events;
   final Function(DateTime firstDate, DateTime lastDate) onPageChanged;
+  final void Function(DateTime) onCellTapped;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_context) => CalendarStateController(events),
-      child: CellCalendarFrame(events),
+      create: (_) =>
+          CalendarStateController(events, onPageChanged, onCellTapped),
+      child: CellCalendarFrame(),
     );
   }
 }
 
 class CellCalendarFrame extends StatelessWidget {
-  CellCalendarFrame(this.events);
-
-  final List<CalendarEvent> events;
+  CellCalendarFrame();
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +45,14 @@ class CellCalendarFrame extends StatelessWidget {
         MonthYearLabel(),
         Expanded(
           child: PageView.builder(
-            controller: PageController(initialPage: 1200),
-            itemBuilder: (context, index) {
-              return CalendarBody.wrapped(index.currentDateTime, events);
-            },
-            onPageChanged:
+              controller: PageController(initialPage: 1200),
+              itemBuilder: (context, index) {
+                return CalendarBody.wrapped(index.currentDateTime);
+              },
+              onPageChanged: (index) {
                 Provider.of<CalendarStateController>(context, listen: false)
-                    .onPageChanged,
-          ),
+                    .onPageChanged(index);
+              }),
         ),
       ],
     );
@@ -80,17 +80,14 @@ class MonthYearLabel extends StatelessWidget {
 }
 
 class CalendarBody extends StatelessWidget {
-  const CalendarBody._(
-    this.events, {
+  const CalendarBody._({
     Key key,
   }) : super(key: key);
 
-  final List<CalendarEvent> events;
-
-  static Widget wrapped(DateTime currentPageDate, List<CalendarEvent> events) {
+  static Widget wrapped(DateTime currentPageDate) {
     return ChangeNotifierProvider(
       create: (_context) => CalendarMonthController(currentPageDate),
-      child: CalendarBody._(events),
+      child: CalendarBody._(),
     );
   }
 
@@ -118,9 +115,13 @@ class DaysOfTheWeek extends StatelessWidget {
     return Row(
       children: _DaysOfTheWeek.map((day) {
         return Expanded(
-          child: Text(
-            day,
-            textAlign: TextAlign.center,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text(
+              day,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         );
       }).toList(),
@@ -166,21 +167,31 @@ class DayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          date.day.toString(),
-          textAlign: TextAlign.center,
-        ),
-        Column(
-          children: Provider.of<CalendarStateController>(context)
-              .eventsOnTheDay(date)
-              .map(
-                (event) => EventLabel(event),
-              )
-              .toList(),
-        )
-      ],
+    return GestureDetector(
+      onTap: () {
+        Provider.of<CalendarStateController>(context, listen: false)
+            .onCellTapped(date);
+      },
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 4),
+            child: Text(
+              date.day.toString(),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Column(
+            children: Provider.of<CalendarStateController>(context)
+                .eventsOnTheDay(date)
+                .map(
+                  (event) => EventLabel(event),
+                )
+                .toList(),
+          )
+        ],
+      ),
     );
   }
 }
@@ -198,7 +209,8 @@ class EventLabel extends StatelessWidget {
       color: event.eventBackgroundColor,
       child: Text(
         event.eventName,
-        style: TextStyle(color: event.eventTextColor),
+        style:
+            TextStyle(color: event.eventTextColor, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
         overflow: TextOverflow.ellipsis,
       ),

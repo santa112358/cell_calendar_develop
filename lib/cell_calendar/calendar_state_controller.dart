@@ -4,11 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'constants.dart';
 
 class CalendarStateController extends ChangeNotifier {
-  CalendarStateController(this.events) {
+  CalendarStateController(this.events, this.onPageChangedFromUserArgument,
+      this.onCellTappedFromUserArgument) {
     this._initialize();
   }
 
   final List<CalendarEvent> events;
+
+  final Function(DateTime firstDate, DateTime lastDate)
+      onPageChangedFromUserArgument;
+
+  final void Function(DateTime) onCellTappedFromUserArgument;
 
   DateTime currentDateTime;
 
@@ -19,6 +25,8 @@ class CalendarStateController extends ChangeNotifier {
 
   void onPageChanged(int index) {
     currentDateTime = index.currentDateTime;
+    onPageChangedFromUserArgument(
+        currentDateTime, currentDateTime.add(Duration(days: 41)));
     notifyListeners();
   }
 
@@ -30,5 +38,9 @@ class CalendarStateController extends ChangeNotifier {
             event.eventDate.day == date.day)
         .toList();
     return res;
+  }
+
+  void onCellTapped(DateTime date) {
+    onCellTappedFromUserArgument(date);
   }
 }
