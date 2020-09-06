@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
-
-import 'constants.dart';
+import 'package:flutter/material.dart';
 
 extension _DaysDuration on int {
   Duration get daysDuration {
@@ -8,18 +6,15 @@ extension _DaysDuration on int {
   }
 }
 
-class CellCalendarNotifier extends ChangeNotifier {
-  CellCalendarNotifier() {
+class CalendarMonthController extends ChangeNotifier {
+  CalendarMonthController(this.currentPageDate) {
     this._initialize();
   }
-
-  DateTime currentDateTime;
+  final DateTime currentPageDate;
 
   List<DateTime> currentDays = [];
   void _initialize() {
-    currentDateTime = DateTime.now();
-    currentDays = _getCurrentDays(currentDateTime);
-    notifyListeners();
+    currentDays = _getCurrentDays(currentPageDate);
   }
 
   List<DateTime> _getCurrentDays(DateTime dateTime) {
@@ -35,11 +30,5 @@ class CellCalendarNotifier extends ChangeNotifier {
   DateTime _getFirstDay(DateTime dateTime) {
     final firstDayOfTheMonth = DateTime(dateTime.year, dateTime.month, 1);
     return firstDayOfTheMonth.add(firstDayOfTheMonth.weekday.daysDuration);
-  }
-
-  void onPageChanged(int index) {
-    currentDateTime = index.currentDateTime;
-    currentDays = _getCurrentDays(currentDateTime);
-    notifyListeners();
   }
 }

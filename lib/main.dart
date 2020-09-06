@@ -1,6 +1,8 @@
 import 'package:cell_calendar_develop/cell_calendar/cell_calendar.dart';
 import 'package:flutter/material.dart';
 
+import 'cell_calendar/event.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -21,12 +23,27 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  List<CalendarEvent> sampleEvents() {
+    final today = DateTime.now();
+    final res = [
+      CalendarEvent(eventName: "Test", eventDate: today),
+      CalendarEvent(
+          eventName: "Mike Lunch", eventDate: today.add(Duration(days: 1))),
+      CalendarEvent(
+          eventName: "Movie", eventDate: today.add(Duration(days: 7))),
+      CalendarEvent(
+          eventName: "Interview", eventDate: today.add(Duration(days: 7))),
+    ];
+    return res;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body:
-            CellCalendar() // This trailing comma makes auto-formatting nicer for build methods.
+        body: CellCalendar(
+          events: sampleEvents(),
+        ) // This trailing comma makes auto-formatting nicer for build methods.
         );
   }
 }

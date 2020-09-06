@@ -38,9 +38,9 @@ extension DateExtension on int {
 
   DateTime get currentDateTime {
     final monthDif = this - 1200;
-    final currntYear = _currentYear(monthDif);
+    final currentYear = _currentYear(monthDif);
     final currentMonth = _currentMonth(monthDif);
-    return DateTime(currntYear, currentMonth);
+    return DateTime(currentYear, currentMonth);
   }
 
   int _currentYear(int monthDif) {
@@ -60,7 +60,7 @@ extension DateExtension on int {
     if (res > 0) {
       return res % 12;
     } else {
-      return 12 - (res % 12);
+      return 12 - (-res % 12);
     }
   }
 }
