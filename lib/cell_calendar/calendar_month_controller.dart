@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'constants.dart';
 
-extension _DaysDuration on int {
-
-}
+extension _DaysDuration on int {}
 
 class CalendarMonthController extends ChangeNotifier {
   CalendarMonthController(this.currentPageDate) {
