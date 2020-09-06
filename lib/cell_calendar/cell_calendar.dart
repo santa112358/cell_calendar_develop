@@ -142,18 +142,7 @@ class DaysRow extends StatelessWidget {
     return Expanded(
       child: Row(
         children: dates.map((date) {
-          return Expanded(
-            child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                        color: Theme.of(context).dividerColor, width: 1),
-                    right: BorderSide(
-                        color: Theme.of(context).dividerColor, width: 1),
-                  ),
-                ),
-                child: DayCell(date)),
-          );
+          return DayCell(date);
         }).toList(),
       ),
     );
@@ -167,30 +156,41 @@ class DayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Provider.of<CalendarStateController>(context, listen: false)
-            .onCellTapped(date);
-      },
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 4),
-            child: Text(
-              date.day.toString(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold),
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          Provider.of<CalendarStateController>(context, listen: false)
+              .onCellTapped(date);
+        },
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Theme.of(context).dividerColor, width: 1),
+              right:
+                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
             ),
           ),
-          Column(
-            children: Provider.of<CalendarStateController>(context)
-                .eventsOnTheDay(date)
-                .map(
-                  (event) => EventLabel(event),
-                )
-                .toList(),
-          )
-        ],
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Text(
+                  date.day.toString(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Column(
+                children: Provider.of<CalendarStateController>(context)
+                    .eventsOnTheDay(date)
+                    .map(
+                      (event) => EventLabel(event),
+                    )
+                    .toList(),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

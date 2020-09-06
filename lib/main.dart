@@ -1,6 +1,7 @@
 import 'package:cell_calendar_develop/cell_calendar/cell_calendar.dart';
 import 'package:flutter/material.dart';
 
+import 'cell_calendar/constants.dart';
 import 'cell_calendar/event.dart';
 
 void main() {
@@ -26,13 +27,19 @@ class MyHomePage extends StatelessWidget {
   List<CalendarEvent> sampleEvents() {
     final today = DateTime.now();
     final res = [
-      CalendarEvent(eventName: "Test", eventDate: today),
+      CalendarEvent(eventName: "Final exam", eventDate: today),
       CalendarEvent(
-          eventName: "Mike Lunch", eventDate: today.add(Duration(days: 1))),
+          eventName: "Lunch with Mike",
+          eventDate: today.add(Duration(days: 1))),
       CalendarEvent(
           eventName: "Movie", eventDate: today.add(Duration(days: 7))),
       CalendarEvent(
-          eventName: "Interview", eventDate: today.add(Duration(days: 7))),
+          eventName: "Job Interview", eventDate: today.add(Duration(days: 7))),
+      CalendarEvent(
+          eventName: "デート",
+          eventDate: today.add(Duration(days: 42)),
+          eventBackgroundColor: Colors.pink),
+      CalendarEvent(eventName: "課題", eventDate: today.add(Duration(days: 49))),
     ];
     return res;
   }
@@ -43,7 +50,41 @@ class MyHomePage extends StatelessWidget {
         appBar: AppBar(),
         body: CellCalendar(
           events: sampleEvents(),
-        ) // This trailing comma makes auto-formatting nicer for build methods.
+          onCellTapped: (date) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  final events = sampleEvents()
+                      .where((event) =>
+                          event.eventDate.year == date.year &&
+                          event.eventDate.month == date.month &&
+                          event.eventDate.day == date.day)
+                      .toList();
+                  return AlertDialog(
+                    title:
+                        Text(date.month.monthName + " " + date.day.toString()),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: events
+                          .map(
+                            (event) => Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(4),
+                              margin: EdgeInsets.only(bottom: 12),
+                              color: event.eventBackgroundColor,
+                              child: Text(
+                                event.eventName,
+                                style: TextStyle(color: event.eventTextColor),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  );
+                });
+          },
+        ) // This trailing comma makes auto-formatting
+        // nicer for build methods.
         );
   }
 }

@@ -25,8 +25,10 @@ class CalendarStateController extends ChangeNotifier {
 
   void onPageChanged(int index) {
     currentDateTime = index.currentDateTime;
-    onPageChangedFromUserArgument(
-        currentDateTime, currentDateTime.add(Duration(days: 41)));
+    if (onPageChangedFromUserArgument != null) {
+      onPageChangedFromUserArgument(
+          currentDateTime, currentDateTime.add(Duration(days: 41)));
+    }
     notifyListeners();
   }
 
@@ -41,6 +43,8 @@ class CalendarStateController extends ChangeNotifier {
   }
 
   void onCellTapped(DateTime date) {
-    onCellTappedFromUserArgument(date);
+    if (onCellTappedFromUserArgument != null) {
+      onCellTappedFromUserArgument(date);
+    }
   }
 }
