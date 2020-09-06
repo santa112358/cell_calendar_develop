@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'calendar_event.dart';
+import '../calendar_event.dart';
+import '../date_extension.dart';
 import 'components/days_of_the_week.dart';
 import 'components/days_row.dart';
 import 'components/month_year_label.dart';
-import 'date_extension.dart';
 
 class CellCalendar extends StatelessWidget {
   CellCalendar({this.events, this.onPageChanged, this.onCellTapped});

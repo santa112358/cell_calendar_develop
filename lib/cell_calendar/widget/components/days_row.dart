@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../calendar_event.dart';
-import '../calendar_state_controller.dart';
+import '../../calendar_event.dart';
+import '../../calendar_state_controller.dart';
 
 class DaysRow extends StatelessWidget {
   const DaysRow({

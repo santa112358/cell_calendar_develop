@@ -1,4 +1,4 @@
-import 'package:cell_calendar_develop/cell_calendar/cell_calendar.dart';
+import 'package:cell_calendar_develop/cell_calendar/widget/cell_calendar.dart';
 import 'package:flutter/material.dart';
 
 import 'cell_calendar/calendar_event.dart';
