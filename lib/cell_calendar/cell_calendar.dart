@@ -4,18 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'calendar_event.dart';
+import 'components/days_of_the_week.dart';
+import 'components/days_row.dart';
+import 'components/month_year_label.dart';
 import 'constants.dart';
-import 'event.dart';
-
-const List<String> _DaysOfTheWeek = [
-  'Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fry',
-  'Sat'
-];
 
 class CellCalendar extends StatelessWidget {
   CellCalendar({this.events, this.onPageChanged, this.onCellTapped});
@@ -29,13 +22,13 @@ class CellCalendar extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) =>
           CalendarStateController(events, onPageChanged, onCellTapped),
-      child: CellCalendarFrame(),
+      child: _CalendarBody(),
     );
   }
 }
 
-class CellCalendarFrame extends StatelessWidget {
-  CellCalendarFrame();
+class _CalendarBody extends StatelessWidget {
+  _CalendarBody();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +40,7 @@ class CellCalendarFrame extends StatelessWidget {
           child: PageView.builder(
               controller: PageController(initialPage: 1200),
               itemBuilder: (context, index) {
-                return CalendarBody.wrapped(index.currentDateTime);
+                return _CalendarPage.wrapped(index.currentDateTime);
               },
               onPageChanged: (index) {
                 Provider.of<CalendarStateController>(context, listen: false)
@@ -59,35 +52,15 @@ class CellCalendarFrame extends StatelessWidget {
   }
 }
 
-class MonthYearLabel extends StatelessWidget {
-  const MonthYearLabel({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = Provider.of<CalendarStateController>(context);
-    final monthLabel = controller.currentDateTime?.month?.monthName ?? "";
-    final yearLabel = controller.currentDateTime?.year?.toString();
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      child: Text(
-        monthLabel + " " + yearLabel,
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
-class CalendarBody extends StatelessWidget {
-  const CalendarBody._({
+class _CalendarPage extends StatelessWidget {
+  const _CalendarPage._({
     Key key,
   }) : super(key: key);
 
   static Widget wrapped(DateTime currentPageDate) {
     return ChangeNotifierProvider(
       create: (_context) => CalendarMonthController(currentPageDate),
-      child: CalendarBody._(),
+      child: _CalendarPage._(),
     );
   }
 
@@ -105,115 +78,6 @@ class CalendarBody extends StatelessWidget {
         DaysRow(dates: days.getRange(28, 35).toList()),
         DaysRow(dates: days.getRange(35, 42).toList()),
       ],
-    );
-  }
-}
-
-class DaysOfTheWeek extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: _DaysOfTheWeek.map((day) {
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 8),
-            child: Text(
-              day,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-}
-
-class DaysRow extends StatelessWidget {
-  const DaysRow({
-    @required this.dates,
-    Key key,
-  }) : super(key: key);
-
-  final List<DateTime> dates;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: dates.map((date) {
-          return DayCell(date);
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class DayCell extends StatelessWidget {
-  DayCell(this.date);
-
-  final DateTime date;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          Provider.of<CalendarStateController>(context, listen: false)
-              .onCellTapped(date);
-        },
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(color: Theme.of(context).dividerColor, width: 1),
-              right:
-                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
-            ),
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 4),
-                child: Text(
-                  date.day.toString(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Column(
-                children: Provider.of<CalendarStateController>(context)
-                    .eventsOnTheDay(date)
-                    .map(
-                      (event) => EventLabel(event),
-                    )
-                    .toList(),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class EventLabel extends StatelessWidget {
-  EventLabel(this.event);
-
-  final CalendarEvent event;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(right: 4, bottom: 3),
-      width: double.infinity,
-      color: event.eventBackgroundColor,
-      child: Text(
-        event.eventName,
-        style:
-            TextStyle(color: event.eventTextColor, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.center,
-        overflow: TextOverflow.ellipsis,
-      ),
     );
   }
 }

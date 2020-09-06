@@ -1,4 +1,4 @@
-import 'package:cell_calendar_develop/cell_calendar/event.dart';
+import 'package:cell_calendar_develop/cell_calendar/calendar_event.dart';
 import 'package:flutter/foundation.dart';
 
 import 'constants.dart';
