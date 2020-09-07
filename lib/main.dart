@@ -31,15 +31,21 @@ class MyHomePage extends StatelessWidget {
       CalendarEvent(
           eventName: "Lunch with Mike",
           eventDate: today.add(Duration(days: 1))),
+      CalendarEvent(eventName: "BBQ", eventDate: today.add(Duration(days: 7))),
       CalendarEvent(
-          eventName: "Movie", eventDate: today.add(Duration(days: 7))),
+          eventName: "Jon's Birthday",
+          eventDate: today.add(Duration(days: 7)),
+          eventBackgroundColor: Colors.green),
       CalendarEvent(
-          eventName: "Job Interview", eventDate: today.add(Duration(days: 7))),
-      CalendarEvent(
-          eventName: "デート",
+          eventName: "Date with Rebecca",
           eventDate: today.add(Duration(days: 42)),
           eventBackgroundColor: Colors.pink),
-      CalendarEvent(eventName: "課題", eventDate: today.add(Duration(days: 49))),
+      CalendarEvent(
+        eventName: "Homework deadline",
+        eventDate: today.add(
+          Duration(days: 49),
+        ),
+      ),
     ];
     return res;
   }
