@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../calendar_state_controller.dart';
 import '../../date_extension.dart';
 
+/// Label showing the date of current page
 class MonthYearLabel extends StatelessWidget {
   const MonthYearLabel({
     Key key,

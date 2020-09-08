@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../calendar_event.dart';
 import '../../calendar_state_controller.dart';
 
+/// Show cells of days with events
 class DaysRow extends StatelessWidget {
   const DaysRow({
     @required this.dates,
@@ -17,15 +18,15 @@ class DaysRow extends StatelessWidget {
     return Expanded(
       child: Row(
         children: dates.map((date) {
-          return DayCell(date);
+          return _DayCell(date);
         }).toList(),
       ),
     );
   }
 }
 
-class DayCell extends StatelessWidget {
-  DayCell(this.date);
+class _DayCell extends StatelessWidget {
+  _DayCell(this.date);
 
   final DateTime date;
 
@@ -60,7 +61,7 @@ class DayCell extends StatelessWidget {
                   children: Provider.of<CalendarStateController>(context)
                       .eventsOnTheDay(date)
                       .map(
-                        (event) => EventLabel(event),
+                        (event) => _EventLabel(event),
                       )
                       .toList(),
                 ),
@@ -74,8 +75,8 @@ class DayCell extends StatelessWidget {
   }
 }
 
-class EventLabel extends StatelessWidget {
-  EventLabel(this.event);
+class _EventLabel extends StatelessWidget {
+  _EventLabel(this.event);
 
   final CalendarEvent event;
 

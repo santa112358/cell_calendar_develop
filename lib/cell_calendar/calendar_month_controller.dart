@@ -4,6 +4,7 @@ import 'date_extension.dart';
 
 extension _DaysDuration on int {}
 
+/// Controller to circulate and show the days of the current page
 class CalendarMonthController extends ChangeNotifier {
   CalendarMonthController(this.currentPageDate) {
     this._initialize();

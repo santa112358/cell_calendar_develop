@@ -10,6 +10,9 @@ import 'components/days_of_the_week.dart';
 import 'components/days_row.dart';
 import 'components/month_year_label.dart';
 
+/// Calendar widget like a Google Calendar
+///
+/// Expected to be used in full screen
 class CellCalendar extends StatelessWidget {
   CellCalendar({this.events, this.onPageChanged, this.onCellTapped});
 

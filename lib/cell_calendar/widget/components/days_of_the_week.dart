@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Days of the week
+///
+// TODO: Internationalize the days of the week
 const List<String> _DaysOfTheWeek = [
   'Sun',
   'Mon',
