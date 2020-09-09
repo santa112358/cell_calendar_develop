@@ -1,3 +1,4 @@
+import 'package:cell_calendar_develop/cell_calendar/cell_size_controller.dart';
 import 'package:cell_calendar_develop/cell_calendar/widget/components/measure_size.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,13 +16,13 @@ class Events extends StatefulWidget {
 }
 
 class _EventsState extends State<Events> {
-  double cellHeight;
+  Size cellSize;
 
   @override
   Widget build(BuildContext context) {
     return MeasureSize(
       onChange: (size) {
-        cellHeight = size.height;
+        Provider.of<CellSizeController>(context, listen: false).onChanged(size);
       },
       child: Selector<CalendarStateController, List<CalendarEvent>>(
         builder: (context, events, _) => Column(
@@ -29,7 +30,10 @@ class _EventsState extends State<Events> {
               .eventsOnTheDay(widget.date)
               .map(
             (event) {
-              print(cellHeight);
+              print("______________");
+              print(cellSize);
+              print(cellSize.height);
+              print(MediaQuery.of(context).size);
               return _EventLabel(event);
             },
           ).toList(),

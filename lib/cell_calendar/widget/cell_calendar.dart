@@ -1,5 +1,6 @@
 import 'package:cell_calendar_develop/cell_calendar/calendar_month_controller.dart';
 import 'package:cell_calendar_develop/cell_calendar/calendar_state_controller.dart';
+import 'package:cell_calendar_develop/cell_calendar/cell_size_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,9 +23,16 @@ class CellCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) =>
-          CalendarStateController(events, onPageChanged, onCellTapped),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) =>
+              CalendarStateController(events, onPageChanged, onCellTapped),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CellSizeController(),
+        ),
+      ],
       child: _CalendarBody(),
     );
   }
