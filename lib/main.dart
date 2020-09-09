@@ -29,19 +29,19 @@ class MyHomePage extends StatelessWidget {
     final res = [
       CalendarEvent(eventName: "Final exam", eventDate: today),
       CalendarEvent(
-          eventName: "Lunch with Mike",
+          eventName: "Lunch with Mike 1",
           eventDate: today.add(Duration(days: 1))),
       CalendarEvent(
-          eventName: "Lunch with Mike",
+          eventName: "Lunch with Mike 2",
           eventDate: today.add(Duration(days: 1))),
       CalendarEvent(
-          eventName: "Lunch with Mike",
+          eventName: "Lunch with Mike 3",
           eventDate: today.add(Duration(days: 1))),
       CalendarEvent(
-          eventName: "Lunch with Mike",
+          eventName: "Lunch with Mike 4",
           eventDate: today.add(Duration(days: 1))),
       CalendarEvent(
-          eventName: "Lunch with Mike",
+          eventName: "Lunch with Mike 5",
           eventDate: today.add(Duration(days: 1))),
       CalendarEvent(eventName: "BBQ", eventDate: today.add(Duration(days: 7))),
       CalendarEvent(

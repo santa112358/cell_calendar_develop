@@ -40,23 +40,6 @@ class _DayCell extends StatelessWidget {
 
   final DateTime date;
 
-  List<CalendarEvent> _eventsOnTheDay(
-      DateTime date, List<CalendarEvent> events) {
-    final res = events
-        .where((event) =>
-            event.eventDate.year == date.year &&
-            event.eventDate.month == date.month &&
-            event.eventDate.day == date.day)
-        .toList();
-    return res;
-  }
-
-  bool _hasEnoughSpace(double cellHeight, int eventsLength) {
-    final eventsTotalHeight = _eventLabelHeight * eventsLength;
-    final spaceForEvents = cellHeight - _dayLabelHeight;
-    return spaceForEvents > eventsTotalHeight;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -89,50 +72,80 @@ class _DayCell extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-                Selector<CalendarStateController, List<CalendarEvent>>(
-                  builder: (context, events, _) {
-                    final cellHeight =
-                        Provider.of<CellSizeController>(context).cellHeight;
-                    final eventsOnTheDay = _eventsOnTheDay(date, events);
-                    final hasEnoughSpace =
-                        _hasEnoughSpace(cellHeight, eventsOnTheDay.length);
-                    final indexWithPlot = eventsOnTheDay.length - 3;
-                    return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: eventsOnTheDay.length,
-                      reverse: true,
-                      itemBuilder: (context, index) {
-                        if (hasEnoughSpace) {
-                          return _EventLabel(eventsOnTheDay[index]);
-                        } else if (index > indexWithPlot) {
-                          return _EventLabel(eventsOnTheDay[index]);
-                        } else if (index == indexWithPlot) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _EventLabel(
-                                eventsOnTheDay[index],
-                              ),
-                              Icon(
-                                Icons.more_horiz,
-                                size: 13,
-                              )
-                            ],
-                          );
-                        } else {
-                          return SizedBox.shrink();
-                        }
-                      },
-                    );
-                  },
-                  selector: (context, controller) => controller.events,
-                ),
+                Events(date),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class Events extends StatelessWidget {
+  Events(this.date);
+
+  final DateTime date;
+
+  List<CalendarEvent> _eventsOnTheDay(
+      DateTime date, List<CalendarEvent> events) {
+    final res = events
+        .where((event) =>
+            event.eventDate.year == date.year &&
+            event.eventDate.month == date.month &&
+            event.eventDate.day == date.day)
+        .toList();
+    return res;
+  }
+
+  bool _hasEnoughSpace(double cellHeight, int eventsLength) {
+    final eventsTotalHeight = _eventLabelHeight * eventsLength;
+    final spaceForEvents = cellHeight - _dayLabelHeight;
+    return spaceForEvents > eventsTotalHeight;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cellHeight = Provider.of<CellSizeController>(context).cellHeight;
+    return Selector<CalendarStateController, List<CalendarEvent>>(
+      builder: (context, events, _) {
+        if (cellHeight == null) {
+          return const SizedBox.shrink();
+        }
+        final eventsOnTheDay = _eventsOnTheDay(date, events);
+        final hasEnoughSpace =
+            _hasEnoughSpace(cellHeight, eventsOnTheDay.length);
+        final indexWithPlot = eventsOnTheDay.length - 3;
+        return ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: eventsOnTheDay.length ?? 0,
+          reverse: true,
+          itemBuilder: (context, index) {
+            if (hasEnoughSpace) {
+              return _EventLabel(eventsOnTheDay[index]);
+            } else if (index > indexWithPlot) {
+              return _EventLabel(eventsOnTheDay[index]);
+            } else if (index == indexWithPlot) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _EventLabel(
+                    eventsOnTheDay[index],
+                  ),
+                  Icon(
+                    Icons.more_horiz,
+                    size: 13,
+                  )
+                ],
+              );
+            } else {
+              return SizedBox.shrink();
+            }
+          },
+        );
+      },
+      selector: (context, controller) => controller.events,
     );
   }
 }
